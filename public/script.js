@@ -1,6 +1,9 @@
 async function generateCode() {
   try {
-    const response = await fetch('http://localhost:3000/generate_code');
+    console.log('Sending request to generate code...');
+    const response = await fetch(
+      'https://file-sender-eta.vercel.app/generate_code'
+    );
     if (!response.ok) {
       throw new Error(`Error: ${response.statusText}`);
     }
@@ -16,11 +19,14 @@ async function joinSession(event) {
   event.preventDefault();
   try {
     const code = document.getElementById('session-code').value;
-    const response = await fetch('http://localhost:3000/join-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code }),
-    });
+    const response = await fetch(
+      'https://file-sender-eta.vercel.app/join-session',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Error: ${response.statusText}`);
@@ -33,17 +39,19 @@ async function joinSession(event) {
   }
 }
 
-// Event handler for file upload form submission
 document.getElementById('upload-form').onsubmit = async function (event) {
   event.preventDefault();
   try {
     const formData = new FormData(this);
     const code = document.getElementById('upload-code').value;
 
-    const response = await fetch(`http://localhost:3000/upload/${code}`, {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await fetch(
+      `https://file-sender-eta.vercel.app/upload/${code}`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Error: ${response.statusText}`);
@@ -51,11 +59,9 @@ document.getElementById('upload-form').onsubmit = async function (event) {
     const data = await response.json();
     alert(data.message || data.error);
 
-    // Check if the file upload was successful
     if (data.message && data.message === 'File uploaded successfully.') {
       console.log('File uploaded successfully:', data);
       alert('File uploaded successfully!');
-      // Optionally, you can call the download function here
       downloadFile(code);
     } else {
       console.error('File upload failed:', data.error);
@@ -67,17 +73,18 @@ document.getElementById('upload-form').onsubmit = async function (event) {
   }
 };
 
-// Function to download the uploaded file
 async function downloadFile(code) {
   try {
-    const response = await fetch(`http://localhost:3000/download/${code}`);
+    const response = await fetch(
+      `https://file-sender-eta.vercel.app/download/${code}`
+    );
     if (!response.ok) {
       throw new Error(`Error: ${response.statusText}`);
     }
     const blob = await response.blob();
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'uploaded-file'; // This will be the name of the file (the server handles the name)
+    link.download = 'uploaded-file'; 
     link.click();
   } catch (error) {
     console.error('Failed to download file:', error);
