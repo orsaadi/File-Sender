@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>File Sharing via Chat Code</h1>
+    <button onclick="generateCode()">Generate Chat Code</button>
+    <p id="chat-code"></p>
+
+    <h2>Join Session</h2>
+    <form
+      id="join-form"
+      onsubmit="joinSession(event)"
+    >
+      <input
+        type="text"
+        id="session-code"
+        placeholder="Enter Chat Code"
+        required
+      />
+      <button type="submit">Join</button>
+    </form>
+
+    <h2>Upload File</h2>
+    <form
+      id="upload-form"
+      enctype="multipart/form-data"
+    >
+      <input
+        type="text"
+        id="upload-code"
+        placeholder="Enter Chat Code"
+        required
+      />
+      <input
+        type="file"
+        name="file"
+        required
+      />
+      <button type="submit">Upload</button>
+    </form>
+    <script src="script.js"></script>
+  </body>
+</html>
